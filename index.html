@@ -31,7 +31,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--light);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -379,6 +379,32 @@
             to { transform: scale(1); opacity: 1; }
         }
 
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--gray-light);
+            border-radius: 16px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255,87,34,0.1);
+        }
+
         .search-input {
             width: 100%;
             padding: 14px 20px;
@@ -542,10 +568,11 @@
         <!-- Modals -->
         <div id="cartModal" class="modal"><div class="modal-content"><h2 style="margin-bottom: 20px;">🛒 Your Cart</h2><div id="cartItems"></div><div id="cartTotal" style="font-size: 26px; font-weight: 800; margin: 20px 0;"></div><textarea id="deliveryInstructions" rows="2" placeholder="Special instructions (e.g., gate code)..." style="width:100%; padding:12px; border-radius:20px; border:1px solid #ddd;"></textarea><button class="btn btn-primary" onclick="placeOrder()" style="width:100%; margin-top:16px;">Place Order</button><button class="btn btn-outline" onclick="closeModal('cartModal')" style="width:100%; margin-top:12px;">Close</button></div></div>
         <div id="addFoodModal" class="modal"><div class="modal-content"><h2>➕ New Dish</h2><div class="form-group"><label>Name</label><input type="text" id="foodName" placeholder="e.g., Truffle Burger"></div><div class="form-group"><label>Price ($)</label><input type="number" id="foodPrice" placeholder="14.99"></div><div class="form-group"><label>Description</label><textarea id="foodDesc" rows="2"></textarea></div><div class="form-group"><label>Category</label><select id="foodCategory"><option>Burgers</option><option>Pizza</option><option>Sushi</option><option>Pasta</option><option>Desserts</option></select></div><button class="btn btn-primary" onclick="addFoodItem()">Add Item</button><button class="btn btn-outline" onclick="closeModal('addFoodModal')">Cancel</button></div></div>
-        <div id="authModal" class="modal active"><div class="modal-content"><div style="text-align:center;margin-bottom:20px;"><div style="font-size:70px;">🍔</div><h2 style="color:var(--primary);">Kohekaf</h2><p style="color:var(--gray);">Sign in to continue</p></div><div id="authForm"><div class="form-group"><label>Email</label><input type="email" id="authEmail" placeholder="hello@kohekaf.com"></div><div class="form-group"><label>Password</label><input type="password" id="authPassword" placeholder="any password"></div><button class="btn btn-primary" onclick="login()" style="width:100%;">Login</button><button class="btn btn-outline" onclick="showSignupForm()" style="width:100%;margin-top:12px;">Create account</button></div><p style="font-size:12px;text-align:center;margin-top:20px;">Demo: any email works</p></div></div>
+        <div id="authModal" class="modal"><div class="modal-content"><div style="text-align:center;margin-bottom:20px;"><div style="font-size:70px;">🍔</div><h2 style="color:var(--primary);">Kohekaf</h2><p style="color:var(--gray);">Sign in to continue</p></div><div id="authForm"><div class="form-group"><label>Email</label><input type="email" id="authEmail" placeholder="hello@kohekaf.com"></div><div class="form-group"><label>Password</label><input type="password" id="authPassword" placeholder="any password"></div><button class="btn btn-primary" onclick="login()" style="width:100%;">Login</button><button class="btn btn-outline" onclick="showSignupForm()" style="width:100%;margin-top:12px;">Create account</button></div><p style="font-size:12px;text-align:center;margin-top:20px;">Demo: any email works</p></div></div>
     </div>
 
     <script>
+        // Sample Data
         const restaurants = [
             { id: '1', name: 'Spice Kingdom', icon: '🍛', rating: 4.9, time: '20-25 min', minOrder: 7, open: true, cuisine: 'Indian' },
             { id: '2', name: 'Bella Napoli', icon: '🍕', rating: 4.8, time: '25-35 min', minOrder: 10, open: true, cuisine: 'Italian' },
@@ -553,49 +580,524 @@
             { id: '4', name: 'Burger District', icon: '🍔', rating: 4.7, time: '20-30 min', minOrder: 6, open: true, cuisine: 'Burgers' },
             { id: '5', name: 'Wok & Roll', icon: '🥡', rating: 4.6, time: '20-30 min', minOrder: 8, open: true, cuisine: 'Chinese' }
         ];
+        
         let foods = [
             { id: 'f1', name: 'Butter Chicken Bowl', price: 13.99, desc: 'Creamy tomato gravy', category: 'Indian', restaurantId: '1', popular: true, image: '🍛' },
             { id: 'f2', name: 'Margherita Pizza', price: 11.99, desc: 'San Marzano tomatoes', category: 'Pizza', restaurantId: '2', popular: true, image: '🍕' },
             { id: 'f3', name: 'Rainbow Roll', price: 16.99, desc: 'Fresh salmon & avocado', category: 'Sushi', restaurantId: '3', popular: true, image: '🍣' },
             { id: 'f4', name: 'Smash Burger', price: 9.99, desc: 'Double beef, cheddar', category: 'Burgers', restaurantId: '4', popular: true, image: '🍔' },
-            { id: 'f5', name: 'Kung Pao Chicken', price: 12.99, desc: 'Spicy & savory', category: 'Chinese', restaurantId: '5', popular: true, image: '🥡' }
+            { id: 'f5', name: 'Kung Pao Chicken', price: 12.99, desc: 'Spicy & savory', category: 'Chinese', restaurantId: '5', popular: true, image: '🥡' },
+            { id: 'f6', name: 'Chocolate Lava Cake', price: 6.99, desc: 'Warm molten center', category: 'Desserts', restaurantId: '2', popular: false, image: '🍰' }
         ];
-        let currentUser = null, userType = 'customer', cart = [], location = null, driverOnline = false;
+        
+        // Global State
+        let currentUser = null;
+        let userType = 'customer';
+        let cart = [];
+        let location = null;
+        let driverOnline = false;
 
-        setTimeout(() => { document.getElementById('loadingScreen').style.opacity = '0'; setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; }, 400); }, 1400);
+        // Hide loading screen and show auth modal after delay
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                // Show auth modal
+                const authModal = document.getElementById('authModal');
+                authModal.classList.add('active');
+            }, 400);
+        }, 1500);
 
-        function login() { const email = document.getElementById('authEmail').value; if(!email) { showToast('Enter email', 'error'); return; } currentUser = { uid: 'user_1', name: email.split('@')[0], email, type: 'customer' }; userType = 'customer'; document.getElementById('authModal').classList.remove('active'); document.getElementById('navbar').style.display = 'block'; document.getElementById('mainContainer').style.display = 'block'; updateUI(); loadData(); loadCart(); showToast(`Welcome ${currentUser.name} 🎉`); }
-        function showSignupForm() { const formDiv = document.getElementById('authForm'); formDiv.innerHTML = `<div class="form-group"><label>Name</label><input id="signupName"></div><div class="form-group"><label>Email</label><input id="signupEmail"></div><div class="form-group"><label>Password</label><input type="password" id="signupPassword"></div><div class="form-group"><label>Role</label><select id="signupType"><option value="customer">Customer</option><option value="driver">Driver</option><option value="restaurant">Restaurant</option></select></div><button class="btn btn-primary" onclick="signup()">Sign up</button><button class="btn btn-outline" onclick="showLoginForm()">Back</button>`; }
-        function showLoginForm() { const formDiv = document.getElementById('authForm'); formDiv.innerHTML = `<div class="form-group"><label>Email</label><input id="authEmail"></div><div class="form-group"><label>Password</label><input type="password" id="authPassword"></div><button class="btn btn-primary" onclick="login()">Login</button><button class="btn btn-outline" onclick="showSignupForm()">Create account</button>`; }
-        function signup() { const name = document.getElementById('signupName').value; const email = document.getElementById('signupEmail').value; const type = document.getElementById('signupType').value; if(!name) { showToast('Enter name'); return; } currentUser = { uid: 'uid_'+Date.now(), name, email, type }; userType = type; document.getElementById('authModal').classList.remove('active'); document.getElementById('navbar').style.display = 'block'; document.getElementById('mainContainer').style.display = 'block'; updateUI(); loadData(); loadCart(); showToast(`Welcome ${name}!`); }
-        function logout() { location.reload(); }
-        function updateUI() { document.querySelectorAll('.user-type-btn').forEach(btn => btn.classList.remove('active')); const map = { customer:0, driver:1, restaurant:2, admin:3 }; const idx = map[userType]; if(idx!==undefined) document.querySelectorAll('.user-type-btn')[idx]?.classList.add('active'); document.getElementById('navLinks').innerHTML = `<div class="nav-link" onclick="changeSection('home')"><i class="fas fa-home"></i> Home</div><div class="nav-link" onclick="showOrders()"><i class="fas fa-box"></i> Orders</div><div class="cart-icon" onclick="showCart()"><i class="fas fa-shopping-bag"></i><span id="cartBadge" class="cart-badge">0</span></div><div class="nav-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Exit</div>`; updateCartBadge(); }
-        function setUserType(type) { if(currentUser && currentUser.type !== type && type !== 'admin') { showToast(`You're logged in as ${currentUser.type}`, 'error'); return; } userType = type; changeSection(type === 'customer' ? 'home' : type); const btns = document.querySelectorAll('.user-type-btn'); const types = ['customer','driver','restaurant','admin']; const i = types.indexOf(type); if(btns[i]) { btns.forEach(b=>b.classList.remove('active')); btns[i].classList.add('active'); } if(type==='driver') loadDriverOrders(); if(type==='restaurant') loadRestaurantData(); if(type==='admin') loadAdminData(); }
-        function changeSection(section) { document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); const mapId = { home:'customerSection', driver:'driverSection', restaurant:'restaurantSection', admin:'adminSection' }; const targetId = mapId[section] || (userType+'Section'); document.getElementById(targetId).classList.add('active'); if(section==='orders') showOrders(); }
-        function loadData() { loadCategories(); displayRestaurants(restaurants); const popularDiv = document.getElementById('popularItems'); popularDiv.innerHTML = foods.filter(f=>f.popular).map(f=>`<div class="meal-card" onclick="addToCart('${f.id}','${f.name}',${f.price})"><div class="meal-image">${f.image}</div><div class="meal-info"><div class="meal-name">${f.name}</div><div class="price">$${f.price}</div><button class="btn btn-primary" style="width:100%; margin-top:8px;">Add to Cart</button></div></div>`).join(''); }
-        function loadCategories() { const cats = ['All','Indian','Italian','Japanese','Burgers','Chinese']; document.getElementById('categories').innerHTML = cats.map(c=>`<button class="category-btn" onclick="filterByCategory('${c}')">${c}</button>`).join(''); }
-        function filterByCategory(cat) { if(cat==='All') displayRestaurants(restaurants); else { const filtered = restaurants.filter(r=>r.cuisine===cat); displayRestaurants(filtered); } }
-        function displayRestaurants(list) { document.getElementById('restaurantsList').innerHTML = list.map(r=>`<div class="restaurant-card" onclick="showRestaurantMenu('${r.id}')"><div class="restaurant-image">${r.icon}</div><div class="restaurant-info"><div class="restaurant-name">${r.name}</div><div class="rating">⭐ ${r.rating} (${Math.floor(200+Math.random()*300)}+)</div><div class="delivery-time">🚚 ${r.time}</div><div>💰 Min $${r.minOrder}</div><div>${r.open?'🟢 Open Now':'🔴 Closed'}</div></div></div>`).join(''); }
-        function showRestaurantMenu(restId) { const menuItems = foods.filter(f=>f.restaurantId===restId); const modalDiv = document.createElement('div'); modalDiv.className = 'modal active'; modalDiv.innerHTML = `<div class="modal-content"><h2>🍽️ Menu</h2>${menuItems.map(f=>`<div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid #eee;"><div><strong>${f.name}</strong><div style="font-size:13px; color:gray;">${f.desc}</div><div style="color:var(--primary);font-weight:800;">$${f.price}</div></div><button class="btn btn-primary" onclick="addToCart('${f.id}','${f.name}',${f.price}); this.closest('.modal').remove();">Add</button></div>`).join('')}<button class="btn btn-outline" onclick="this.closest('.modal').remove()" style="width:100%;margin-top:20px;">Close</button></div>`; document.body.appendChild(modalDiv); }
-        function addToCart(id,name,price) { const existing = cart.find(i=>i.id===id); if(existing) existing.qty++; else cart.push({id,name,price,qty:1}); updateCartBadge(); saveCart(); showToast(`✓ ${name} added`); }
-        function updateCartBadge() { const badge = document.getElementById('cartBadge'); if(badge) badge.innerText = cart.reduce((s,i)=>s+i.qty,0); }
-        function loadCart() { const saved = localStorage.getItem('kohekaf_cart'); if(saved) cart = JSON.parse(saved); updateCartBadge(); }
-        function saveCart() { localStorage.setItem('kohekaf_cart', JSON.stringify(cart)); }
-        function showCart() { const modal = document.getElementById('cartModal'); const itemsDiv = document.getElementById('cartItems'); if(cart.length===0) itemsDiv.innerHTML = '<p style="text-align:center;">Your cart is empty 🛍️</p>'; else itemsDiv.innerHTML = cart.map(i=>`<div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f0f0f0;"><div><strong>${i.name}</strong><div>$${i.price} x ${i.qty}</div></div><div><button class="btn btn-outline" onclick="updateQty('${i.id}',-1)" style="padding:4px 12px;">−</button><span style="margin:0 12px;">${i.qty}</span><button class="btn btn-outline" onclick="updateQty('${i.id}',1)" style="padding:4px 12px;">+</button></div></div>`).join(''); const total = cart.reduce((s,i)=>s+(i.price*i.qty),0); document.getElementById('cartTotal').innerHTML = `Total: $${total.toFixed(2)}`; modal.classList.add('active'); }
-        function updateQty(id,delta) { const idx = cart.findIndex(i=>i.id===id); if(idx!==-1) { cart[idx].qty += delta; if(cart[idx].qty<=0) cart.splice(idx,1); updateCartBadge(); saveCart(); showCart(); } }
-        function placeOrder() { if(cart.length===0) { showToast('Cart empty','error'); return; } if(!location) { showToast('Set delivery location first','error'); return; } const total = cart.reduce((s,i)=>s+(i.price*i.qty),0); const order = { id: Date.now(), items: [...cart], total, location, status:'pending', date: new Date().toLocaleString(), userId: currentUser?.uid }; let orders = JSON.parse(localStorage.getItem('kohekaf_orders')||'[]'); orders.unshift(order); localStorage.setItem('kohekaf_orders', JSON.stringify(orders)); cart = []; saveCart(); updateCartBadge(); closeModal('cartModal'); showToast('Order confirmed! 🎉'); showOrders(); }
-        function showOrders() { const orders = JSON.parse(localStorage.getItem('kohekaf_orders')||'[]'); const container = document.getElementById('customerSection'); const existingCard = document.querySelector('#customerSection .orders-history-card'); if(existingCard) existingCard.remove(); const ordersHtml = `<div class="card orders-history-card"><h2><i class="fas fa-receipt"></i> My Orders</h2>${orders.map(o=>`<div class="order-card"><div><strong>Order #${o.id}</strong></div><div>Status: <span class="status-${o.status}">${o.status.toUpperCase()}</span></div><div>Total: $${o.total.toFixed(2)}</div><div>${o.items.length} items • ${o.date}</div></div>`).join('')}</div>`; container.insertAdjacentHTML('beforeend', ordersHtml); }
-        function toggleDriverStatus() { driverOnline = !driverOnline; document.getElementById('driverStatusBtn').innerHTML = driverOnline ? '🔴 Go Offline' : '🟢 Go Online'; showToast(driverOnline ? 'You are now online for deliveries' : 'Offline mode'); }
-        function loadDriverOrders() { const orders = JSON.parse(localStorage.getItem('kohekaf_orders')||'[]'); const pending = orders.filter(o=>o.status==='pending'); document.getElementById('driverOrdersList').innerHTML = `<h3>📋 Available Deliveries</h3>${pending.map(o=>`<div class="order-card"><strong>Order #${o.id}</strong><div>Total: $${o.total}</div><div>📍 ${o.location}</div><button class="btn btn-primary" onclick="acceptOrder(${o.id})" style="margin-top:8px;">Accept Delivery</button></div>`).join('') || '<p>No pending orders</p>'}`; }
-        function acceptOrder(orderId) { let orders = JSON.parse(localStorage.getItem('kohekaf_orders')||'[]'); const order = orders.find(o=>o.id===orderId); if(order) { order.status = 'confirmed'; localStorage.setItem('kohekaf_orders', JSON.stringify(orders)); loadDriverOrders(); showToast('Order accepted! Proceed to pickup'); } }
-        function loadRestaurantData() { document.getElementById('restaurantMenu').innerHTML = `<div class="meal-grid">${foods.map(f=>`<div class="meal-card"><div class="meal-image">${f.image}</div><div class="meal-info"><div class="meal-name">${f.name}</div><div class="price">$${f.price}</div><div style="font-size:12px; color:gray;">${f.category}</div></div></div>`).join('')}</div>`; const orders = JSON.parse(localStorage.getItem('kohekaf_orders')||'[]'); document.getElementById('restaurantOrders').innerHTML = orders.map(o=>`<div class="order-card"><div>Order #${o.id}</div><div>Total: $${o.total}</div><span class="status-${o.status}">${o.status}</span></div>`).join('') || '<p>No incoming orders</p>'; }
-        function showAddFoodModal() { document.getElementById('addFoodModal').classList.add('active'); }
-        function addFoodItem() { const name = document.getElementById('foodName').value; const price = parseFloat(document.getElementById('foodPrice').value); if(name && price) { const newId = 'f'+Date.now(); foods.push({ id:newId, name, price, desc: document.getElementById('foodDesc').value || 'Delicious dish', category: document.getElementById('foodCategory').value, restaurantId: '2', popular: false, image: '🍲' }); showToast('Item added to menu!'); closeModal('addFoodModal'); loadRestaurantData(); document.getElementById('foodName').value=''; document.getElementById('foodPrice').value=''; } else showToast('Enter valid name/price','error'); }
-        function loadAdminData() { const orders = JSON.parse(localStorage.getItem('kohekaf_orders')||'[]'); const totalRev = orders.reduce((s,o)=>s+o.total,0); document.getElementById('adminStats').innerHTML = `<div class="stat-card"><div class="stat-value">${restaurants.length}</div><div>Restaurants</div></div><div class="stat-card"><div class="stat-value">${orders.length}</div><div>Orders</div></div><div class="stat-card"><div class="stat-value">$${totalRev.toFixed(2)}</div><div>Revenue</div></div>`; document.getElementById('allUsersList').innerHTML = '<div>👥 Active users: 6 demo accounts</div><div>🚗 2 drivers online</div>'; document.getElementById('allOrdersList').innerHTML = orders.map(o=>`<div style="padding:8px 0;border-bottom:1px solid #eee;">#${o.id} - $${o.total} - ${o.status}</div>`).join('') || '<div>No orders yet</div>'; }
-        function updateLocation() { const loc = document.getElementById('locationInput').value; if(loc) { location = loc; showToast('📍 Location saved'); } else showToast('Enter address','error'); }
-        function searchItems() { const term = document.getElementById('searchInput').value.toLowerCase(); if(term) { const filtered = restaurants.filter(r=>r.name.toLowerCase().includes(term) || r.cuisine.toLowerCase().includes(term)); displayRestaurants(filtered); } else displayRestaurants(restaurants); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        function showToast(msg,type='success') { const toast = document.createElement('div'); toast.className = 'toast'; toast.innerHTML = `<i class="fas ${type==='error'?'fa-exclamation-circle':'fa-check-circle'}"></i> ${msg}`; document.body.appendChild(toast); setTimeout(()=>toast.remove(),2800); }
+        // Auth Functions
+        function login() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            
+            if (!email) {
+                showToast('Please enter email', 'error');
+                return;
+            }
+            
+            currentUser = { 
+                uid: 'user_' + Date.now(), 
+                name: email.split('@')[0], 
+                email: email, 
+                type: 'customer' 
+            };
+            userType = 'customer';
+            
+            document.getElementById('authModal').classList.remove('active');
+            document.getElementById('navbar').style.display = 'block';
+            document.getElementById('mainContainer').style.display = 'block';
+            
+            updateUI();
+            loadData();
+            loadCart();
+            showToast(`Welcome to Kohekaf, ${currentUser.name}! 🎉`);
+        }
+
+        function showSignupForm() {
+            const formDiv = document.getElementById('authForm');
+            formDiv.innerHTML = `
+                <div class="form-group"><label>Full Name</label><input type="text" id="signupName" placeholder="John Doe"></div>
+                <div class="form-group"><label>Email</label><input type="email" id="signupEmail" placeholder="you@example.com"></div>
+                <div class="form-group"><label>Password</label><input type="password" id="signupPassword" placeholder="••••••••"></div>
+                <div class="form-group"><label>I am a</label><select id="signupType"><option value="customer">Customer</option><option value="driver">Delivery Partner</option><option value="restaurant">Restaurant Owner</option></select></div>
+                <button class="btn btn-primary" onclick="signup()" style="width:100%;">Create Account</button>
+                <button class="btn btn-outline" onclick="showLoginForm()" style="width:100%; margin-top:12px;">Back to Login</button>
+            `;
+        }
+
+        function showLoginForm() {
+            const formDiv = document.getElementById('authForm');
+            formDiv.innerHTML = `
+                <div class="form-group"><label>Email</label><input type="email" id="authEmail" placeholder="hello@kohekaf.com"></div>
+                <div class="form-group"><label>Password</label><input type="password" id="authPassword" placeholder="any password"></div>
+                <button class="btn btn-primary" onclick="login()" style="width:100%;">Login</button>
+                <button class="btn btn-outline" onclick="showSignupForm()" style="width:100%;margin-top:12px;">Create account</button>
+            `;
+        }
+
+        function signup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const type = document.getElementById('signupType').value;
+            
+            if (!name || !email) {
+                showToast('Please fill all fields', 'error');
+                return;
+            }
+            
+            currentUser = { 
+                uid: 'user_' + Date.now(), 
+                name: name, 
+                email: email, 
+                type: type 
+            };
+            userType = type;
+            
+            document.getElementById('authModal').classList.remove('active');
+            document.getElementById('navbar').style.display = 'block';
+            document.getElementById('mainContainer').style.display = 'block';
+            
+            updateUI();
+            loadData();
+            loadCart();
+            showToast(`Welcome to Kohekaf, ${name}! 🎉`);
+        }
+
+        function logout() {
+            currentUser = null;
+            location.reload();
+        }
+
+        function updateUI() {
+            // Update user type selector active state
+            const btns = document.querySelectorAll('.user-type-btn');
+            const types = ['customer', 'driver', 'restaurant', 'admin'];
+            const idx = types.indexOf(userType);
+            btns.forEach(btn => btn.classList.remove('active'));
+            if (btns[idx]) btns[idx].classList.add('active');
+            
+            // Update nav links
+            document.getElementById('navLinks').innerHTML = `
+                <div class="nav-link" onclick="changeSection('home')"><i class="fas fa-home"></i> Home</div>
+                <div class="nav-link" onclick="showOrders()"><i class="fas fa-box"></i> Orders</div>
+                <div class="cart-icon" onclick="showCart()"><i class="fas fa-shopping-bag"></i><span id="cartBadge" class="cart-badge">0</span></div>
+                <div class="nav-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Exit</div>
+            `;
+            updateCartBadge();
+        }
+
+        function setUserType(type) {
+            if (currentUser && currentUser.type !== type && type !== 'admin') {
+                showToast(`You are logged in as ${currentUser.type}`, 'error');
+                return;
+            }
+            userType = type;
+            changeSection(type === 'customer' ? 'home' : type);
+            
+            const btns = document.querySelectorAll('.user-type-btn');
+            const types = ['customer', 'driver', 'restaurant', 'admin'];
+            const idx = types.indexOf(type);
+            btns.forEach(btn => btn.classList.remove('active'));
+            if (btns[idx]) btns[idx].classList.add('active');
+            
+            if (type === 'driver') loadDriverOrders();
+            if (type === 'restaurant') loadRestaurantData();
+            if (type === 'admin') loadAdminData();
+        }
+
+        function changeSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            const sectionMap = {
+                home: 'customerSection',
+                driver: 'driverSection',
+                restaurant: 'restaurantSection',
+                admin: 'adminSection'
+            };
+            const targetId = sectionMap[section] || (userType + 'Section');
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) targetSection.classList.add('active');
+            
+            if (section === 'orders') showOrders();
+        }
+
+        function loadData() {
+            loadCategories();
+            displayRestaurants(restaurants);
+            displayPopularItems();
+        }
+
+        function loadCategories() {
+            const cats = ['All', 'Indian', 'Italian', 'Japanese', 'Burgers', 'Chinese', 'Desserts'];
+            document.getElementById('categories').innerHTML = cats.map(cat => 
+                `<button class="category-btn" onclick="filterByCategory('${cat}')">${cat}</button>`
+            ).join('');
+        }
+
+        function filterByCategory(category) {
+            if (category === 'All') {
+                displayRestaurants(restaurants);
+            } else {
+                const filtered = restaurants.filter(r => r.cuisine === category);
+                displayRestaurants(filtered);
+            }
+        }
+
+        function displayRestaurants(list) {
+            const container = document.getElementById('restaurantsList');
+            if (!container) return;
+            container.innerHTML = list.map(r => `
+                <div class="restaurant-card" onclick="showRestaurantMenu('${r.id}')">
+                    <div class="restaurant-image">${r.icon}</div>
+                    <div class="restaurant-info">
+                        <div class="restaurant-name">${r.name}</div>
+                        <div class="rating">⭐ ${r.rating} (${Math.floor(200 + Math.random() * 300)}+)</div>
+                        <div class="delivery-time">🚚 ${r.time}</div>
+                        <div>💰 Min $${r.minOrder}</div>
+                        <div>${r.open ? '🟢 Open Now' : '🔴 Closed'}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayPopularItems() {
+            const container = document.getElementById('popularItems');
+            if (!container) return;
+            const popular = foods.filter(f => f.popular);
+            container.innerHTML = popular.map(f => `
+                <div class="meal-card" onclick="addToCart('${f.id}', '${f.name}', ${f.price})">
+                    <div class="meal-image">${f.image}</div>
+                    <div class="meal-info">
+                        <div class="meal-name">${f.name}</div>
+                        <div class="price">$${f.price}</div>
+                        <button class="btn btn-primary" style="width:100%; margin-top:8px;">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showRestaurantMenu(restId) {
+            const menuItems = foods.filter(f => f.restaurantId === restId);
+            const modalDiv = document.createElement('div');
+            modalDiv.className = 'modal active';
+            modalDiv.innerHTML = `
+                <div class="modal-content">
+                    <h2>🍽️ Menu</h2>
+                    ${menuItems.map(f => `
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid #eee;">
+                            <div>
+                                <strong>${f.name}</strong>
+                                <div style="font-size:13px; color:gray;">${f.desc}</div>
+                                <div style="color:var(--primary);font-weight:800;">$${f.price}</div>
+                            </div>
+                            <button class="btn btn-primary" onclick="addToCart('${f.id}','${f.name}',${f.price}); this.closest('.modal').remove();">Add</button>
+                        </div>
+                    `).join('')}
+                    <button class="btn btn-outline" onclick="this.closest('.modal').remove()" style="width:100%; margin-top:20px;">Close</button>
+                </div>
+            `;
+            document.body.appendChild(modalDiv);
+        }
+
+        function addToCart(id, name, price) {
+            const existing = cart.find(i => i.id === id);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ id, name, price, qty: 1 });
+            }
+            updateCartBadge();
+            saveCart();
+            showToast(`✓ ${name} added to cart`);
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                const total = cart.reduce((s, i) => s + i.qty, 0);
+                badge.innerText = total;
+            }
+        }
+
+        function loadCart() {
+            const saved = localStorage.getItem('kohekaf_cart');
+            if (saved) cart = JSON.parse(saved);
+            updateCartBadge();
+        }
+
+        function saveCart() {
+            localStorage.setItem('kohekaf_cart', JSON.stringify(cart));
+        }
+
+        function showCart() {
+            const modal = document.getElementById('cartModal');
+            const itemsDiv = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                itemsDiv.innerHTML = '<p style="text-align:center;">Your cart is empty 🛍️</p>';
+            } else {
+                itemsDiv.innerHTML = cart.map(i => `
+                    <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f0f0f0;">
+                        <div>
+                            <strong>${i.name}</strong>
+                            <div>$${i.price} x ${i.qty}</div>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline" onclick="updateQty('${i.id}', -1)" style="padding:4px 12px;">−</button>
+                            <span style="margin:0 12px;">${i.qty}</span>
+                            <button class="btn btn-outline" onclick="updateQty('${i.id}', 1)" style="padding:4px 12px;">+</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            document.getElementById('cartTotal').innerHTML = `Total: $${total.toFixed(2)}`;
+            modal.classList.add('active');
+        }
+
+        function updateQty(id, change) {
+            const itemIndex = cart.findIndex(i => i.id === id);
+            if (itemIndex !== -1) {
+                cart[itemIndex].qty += change;
+                if (cart[itemIndex].qty <= 0) {
+                    cart.splice(itemIndex, 1);
+                }
+                updateCartBadge();
+                saveCart();
+                showCart();
+            }
+        }
+
+        function placeOrder() {
+            if (cart.length === 0) {
+                showToast('Cart is empty!', 'error');
+                return;
+            }
+            if (!location) {
+                showToast('Please set delivery location first!', 'error');
+                return;
+            }
+            
+            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            const order = {
+                id: Date.now(),
+                items: [...cart],
+                total: total,
+                location: location,
+                status: 'pending',
+                date: new Date().toLocaleString(),
+                userId: currentUser?.uid
+            };
+            
+            let orders = JSON.parse(localStorage.getItem('kohekaf_orders') || '[]');
+            orders.unshift(order);
+            localStorage.setItem('kohekaf_orders', JSON.stringify(orders));
+            
+            cart = [];
+            saveCart();
+            updateCartBadge();
+            closeModal('cartModal');
+            showToast('Order placed successfully! 🎉');
+            showOrders();
+        }
+
+        function showOrders() {
+            const orders = JSON.parse(localStorage.getItem('kohekaf_orders') || '[]');
+            const container = document.getElementById('customerSection');
+            const existingCard = document.querySelector('#customerSection .orders-history-card');
+            if (existingCard) existingCard.remove();
+            
+            const ordersHtml = `
+                <div class="card orders-history-card">
+                    <h2><i class="fas fa-receipt"></i> My Orders</h2>
+                    ${orders.map(o => `
+                        <div class="order-card">
+                            <div><strong>Order #${o.id}</strong></div>
+                            <div>Status: <span class="status-${o.status}">${o.status.toUpperCase()}</span></div>
+                            <div>Total: $${o.total.toFixed(2)}</div>
+                            <div>${o.items.length} items • ${o.date}</div>
+                        </div>
+                    `).join('')}
+                    ${orders.length === 0 ? '<p>No orders yet</p>' : ''}
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', ordersHtml);
+        }
+
+        function toggleDriverStatus() {
+            driverOnline = !driverOnline;
+            const btn = document.getElementById('driverStatusBtn');
+            btn.innerHTML = driverOnline ? '🔴 Go Offline' : '🟢 Go Online';
+            showToast(driverOnline ? 'You are now online for deliveries' : 'You are offline');
+        }
+
+        function loadDriverOrders() {
+            const orders = JSON.parse(localStorage.getItem('kohekaf_orders') || '[]');
+            const pending = orders.filter(o => o.status === 'pending');
+            const container = document.getElementById('driverOrdersList');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <h3>📋 Available Deliveries</h3>
+                ${pending.map(o => `
+                    <div class="order-card">
+                        <strong>Order #${o.id}</strong>
+                        <div>Total: $${o.total}</div>
+                        <div>📍 ${o.location}</div>
+                        <button class="btn btn-primary" onclick="acceptOrder(${o.id})" style="margin-top:8px;">Accept Delivery</button>
+                    </div>
+                `).join('')}
+                ${pending.length === 0 ? '<p>No pending orders available</p>' : ''}
+            `;
+        }
+
+        function acceptOrder(orderId) {
+            let orders = JSON.parse(localStorage.getItem('kohekaf_orders') || '[]');
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = 'confirmed';
+                localStorage.setItem('kohekaf_orders', JSON.stringify(orders));
+                loadDriverOrders();
+                showToast('Order accepted! Proceed to pickup');
+            }
+        }
+
+        function loadRestaurantData() {
+            const menuDiv = document.getElementById('restaurantMenu');
+            if (menuDiv) {
+                menuDiv.innerHTML = `
+                    <div class="meal-grid">
+                        ${foods.map(f => `
+                            <div class="meal-card">
+                                <div class="meal-image">${f.image}</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">${f.name}</div>
+                                    <div class="price">$${f.price}</div>
+                                    <div style="font-size:12px; color:gray;">${f.category}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            const orders = JSON.parse(localStorage.getItem('kohekaf_orders') || '[]');
+            const ordersDiv = document.getElementById('restaurantOrders');
+            if (ordersDiv) {
+                ordersDiv.innerHTML = orders.map(o => `
+                    <div class="order-card">
+                        <div>Order #${o.id}</div>
+                        <div>Total: $${o.total}</div>
+                        <span class="status-${o.status}">${o.status}</span>
+                    </div>
+                `).join('') || '<p>No incoming orders</p>';
+            }
+        }
+
+        function showAddFoodModal() {
+            document.getElementById('addFoodModal').classList.add('active');
+        }
+
+        function addFoodItem() {
+            const name = document.getElementById('foodName').value;
+            const price = parseFloat(document.getElementById('foodPrice').value);
+            if (name && price) {
+                const newId = 'f' + Date.now();
+                foods.push({
+                    id: newId,
+                    name: name,
+                    price: price,
+                    desc: document.getElementById('foodDesc').value || 'Delicious dish',
+                    category: document.getElementById('foodCategory').value,
+                    restaurantId: '2',
+                    popular: false,
+                    image: '🍲'
+                });
+                showToast('Food item added to menu!');
+                closeModal('addFoodModal');
+                loadRestaurantData();
+                document.getElementById('foodName').value = '';
+                document.getElementById('foodPrice').value = '';
+                document.getElementById('foodDesc').value = '';
+            } else {
+                showToast('Please enter valid name and price', 'error');
+            }
+        }
+
+        function loadAdminData() {
+            const orders = JSON.parse(localStorage.getItem('kohekaf_orders') || '[]');
+            const totalRev = orders.reduce((s, o) => s + o.total, 0);
+            
+            document.getElementById('adminStats').innerHTML = `
+                <div class="stat-card"><div class="stat-value">${restaurants.length}</div><div>Restaurants</div></div>
+                <div class="stat-card"><div class="stat-value">${orders.length}</div><div>Orders</div></div>
+                <div class="stat-card"><div class="stat-value">$${totalRev.toFixed(2)}</div><div>Revenue</div></div>
+            `;
+            document.getElementById('allUsersList').innerHTML = '<div>👥 Active users: 6 demo accounts</div><div>🚗 2 drivers online</div>';
+            document.getElementById('allOrdersList').innerHTML = orders.map(o => 
+                `<div style="padding:8px 0;border-bottom:1px solid #eee;">#${o.id} - $${o.total} - ${o.status}</div>`
+            ).join('') || '<div>No orders yet</div>';
+        }
+
+        function updateLocation() {
+            const loc = document.getElementById('locationInput').value;
+            if (loc) {
+                location = loc;
+                showToast('📍 Delivery location saved');
+            } else {
+                showToast('Please enter an address', 'error');
+            }
+        }
+
+        function searchItems() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            if (term) {
+                const filtered = restaurants.filter(r => 
+                    r.name.toLowerCase().includes(term) || 
+                    r.cuisine.toLowerCase().includes(term)
+                );
+                displayRestaurants(filtered);
+            } else {
+                displayRestaurants(restaurants);
+            }
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas ${type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${msg}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2800);
+        }
     </script>
 </body>
 </html>
