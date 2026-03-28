@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Kohekaf - Professional Food Delivery with Firebase</title>
+    <title>Kohekaf - Professional Food Delivery</title>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    
-    <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
     
     <style>
         * {
@@ -48,13 +43,6 @@
             overflow-x: hidden;
         }
 
-        body.dark-mode {
-            --white: #1a1a2e;
-            --gray-light: #16213e;
-            --black: #ffffff;
-            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
-        }
-
         /* Loading Screen */
         .loading-screen {
             position: fixed;
@@ -67,7 +55,6 @@
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 0.5s ease;
         }
 
         .loader {
@@ -77,7 +64,7 @@
         .loader-logo {
             width: 100px;
             height: 100px;
-            background: var(--white);
+            background: white;
             border-radius: 30px;
             margin: 0 auto 20px;
             display: flex;
@@ -103,10 +90,10 @@
         }
 
         .loader-progress-bar {
-            width: 0%;
+            width: 100%;
             height: 100%;
-            background: var(--white);
-            animation: load 2s ease forwards;
+            background: white;
+            animation: load 2s ease;
         }
 
         @keyframes bounce {
@@ -115,17 +102,17 @@
         }
 
         @keyframes load {
+            from { width: 0%; }
             to { width: 100%; }
         }
 
         /* Navigation */
         .navbar {
-            background: var(--white);
+            background: white;
             box-shadow: var(--shadow-md);
             position: sticky;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(10px);
         }
 
         .nav-container {
@@ -163,12 +150,12 @@
             cursor: pointer;
         }
 
-        .nav-link:hover, .nav-link.active {
+        .nav-link:hover {
             background: var(--primary-orange);
             color: white;
         }
 
-        .cart-icon, .notif-icon {
+        .cart-icon {
             position: relative;
             cursor: pointer;
             font-size: 24px;
@@ -227,7 +214,7 @@
             font-size: 16px;
             cursor: pointer;
             transition: var(--transition);
-            background: var(--white);
+            background: white;
             color: var(--black);
         }
 
@@ -239,7 +226,7 @@
 
         /* Cards */
         .card {
-            background: var(--white);
+            background: white;
             border-radius: 15px;
             padding: 20px;
             box-shadow: var(--shadow-md);
@@ -261,7 +248,7 @@
         }
 
         .restaurant-card, .meal-card {
-            background: var(--white);
+            background: white;
             border-radius: 15px;
             overflow: hidden;
             cursor: pointer;
@@ -281,13 +268,6 @@
             align-items: center;
             justify-content: center;
             font-size: 60px;
-            position: relative;
-        }
-
-        .restaurant-image img, .meal-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .restaurant-info, .meal-info {
@@ -317,83 +297,7 @@
             margin: 10px 0;
         }
 
-        /* Order Tracking */
-        .tracking-container {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .tracking-steps {
-            display: flex;
-            justify-content: space-between;
-            margin: 30px 0;
-            position: relative;
-            flex-wrap: wrap;
-        }
-
-        .tracking-steps::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--gray-light);
-            z-index: 0;
-        }
-
-        .step {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            flex: 1;
-        }
-
-        .step-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--gray-light);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-            transition: var(--transition);
-        }
-
-        .step.active .step-icon {
-            background: var(--success-green);
-            color: white;
-        }
-
-        .step.completed .step-icon {
-            background: var(--primary-orange);
-            color: white;
-        }
-
-        #map {
-            height: 300px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        /* Driver Dashboard */
-        .driver-order-card {
-            background: var(--white);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .driver-order-card:hover {
-            transform: translateX(5px);
-            box-shadow: var(--shadow-md);
-        }
-
+        /* Order Status */
         .order-status {
             display: inline-block;
             padding: 4px 12px;
@@ -417,7 +321,7 @@
         }
 
         .stat-card {
-            background: var(--white);
+            background: white;
             padding: 20px;
             border-radius: 15px;
             text-align: center;
@@ -448,7 +352,7 @@
         }
 
         .modal-content {
-            background: var(--white);
+            background: white;
             border-radius: 20px;
             max-width: 500px;
             width: 90%;
@@ -530,6 +434,20 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
+        /* Driver Order Card */
+        .driver-order-card {
+            background: var(--gray-light);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .driver-order-card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-links {
@@ -542,13 +460,6 @@
             }
             .restaurant-grid, .meal-grid {
                 grid-template-columns: 1fr;
-            }
-            .tracking-steps {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .tracking-steps::before {
-                display: none;
             }
         }
     </style>
@@ -585,31 +496,25 @@
 
         <!-- Customer Section -->
         <div id="customerSection" class="section active">
-            <!-- Location Bar -->
             <div class="card">
                 <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                     <span>📍</span>
                     <input type="text" id="locationInput" placeholder="Enter your delivery location" style="flex: 1; padding: 10px; border: 1px solid var(--gray-light); border-radius: 8px;">
                     <button class="btn btn-primary" onclick="updateLocation()">Set Location</button>
-                    <button class="btn" onclick="getCurrentLocation()">📍 Current Location</button>
                 </div>
             </div>
 
-            <!-- Search -->
             <div class="card">
                 <input type="text" id="searchFood" placeholder="Search for restaurants or food..." style="width: 100%; padding: 12px; border: 2px solid var(--gray-light); border-radius: 8px;" onkeyup="searchItems()">
             </div>
 
-            <!-- Categories -->
             <div style="overflow-x: auto; white-space: nowrap; margin-bottom: 30px;">
                 <div id="categories" style="display: inline-flex; gap: 10px;"></div>
             </div>
 
-            <!-- Restaurants -->
-            <h2>🍽️ Near You</h2>
+            <h2>🍽️ Restaurants</h2>
             <div id="restaurantsList" class="restaurant-grid"></div>
 
-            <!-- Popular Items -->
             <h2 style="margin-top: 40px;">🔥 Popular Items</h2>
             <div id="popularItems" class="meal-grid"></div>
         </div>
@@ -619,11 +524,8 @@
             <div class="card">
                 <h2>🚗 Delivery Dashboard</h2>
                 <div style="margin: 20px 0;">
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn btn-primary" onclick="toggleDriverStatus()" id="driverStatusBtn">🟢 Go Online</button>
-                        <button class="btn" onclick="refreshDriverOrders()">🔄 Refresh</button>
-                        <button class="btn" onclick="showEarnings()">💰 View Earnings</button>
-                    </div>
+                    <button class="btn btn-primary" onclick="toggleDriverStatus()" id="driverStatusBtn">🟢 Go Online</button>
+                    <button class="btn" onclick="loadDriverOrders()">🔄 Refresh</button>
                 </div>
                 <div id="driverOrdersList"></div>
             </div>
@@ -633,9 +535,9 @@
         <div id="restaurantSection" class="section">
             <div class="card">
                 <h2>🏪 Restaurant Dashboard</h2>
-                <button class="btn btn-primary" onclick="showAddFoodModal()" style="margin: 15px 0;">➕ Add New Food Item</button>
+                <button class="btn btn-primary" onclick="showAddFoodModal()">➕ Add New Food Item</button>
                 <div id="restaurantMenu"></div>
-                <h3 style="margin-top: 30px;">📦 Pending Orders</h3>
+                <h3 style="margin-top: 30px;">📦 Orders</h3>
                 <div id="restaurantOrders"></div>
             </div>
         </div>
@@ -647,13 +549,9 @@
                 <h3>👥 All Users</h3>
                 <div id="allUsersList"></div>
             </div>
-            <div class="card" style="margin-top: 20px;">
+            <div class="card">
                 <h3>📊 All Orders</h3>
                 <div id="allOrdersList"></div>
-            </div>
-            <div class="card">
-                <h3>🏪 All Restaurants</h3>
-                <div id="allRestaurantsList"></div>
             </div>
         </div>
 
@@ -663,22 +561,9 @@
                 <h2>🛒 Your Cart</h2>
                 <div id="cartItems"></div>
                 <div id="cartTotal" style="font-size: 20px; font-weight: bold; margin: 15px 0;"></div>
-                <div class="form-group">
-                    <label>Delivery Instructions (Optional)</label>
-                    <textarea id="deliveryInstructions" rows="2" placeholder="Any special instructions for delivery?"></textarea>
-                </div>
+                <textarea id="deliveryInstructions" rows="2" placeholder="Delivery instructions" style="width: 100%; padding: 10px; margin: 10px 0;"></textarea>
                 <button class="btn btn-primary" onclick="placeOrder()">Place Order</button>
                 <button class="btn" onclick="closeModal('cartModal')">Close</button>
-            </div>
-        </div>
-
-        <!-- Order Tracking Modal -->
-        <div id="trackingModal" class="modal">
-            <div class="modal-content">
-                <h2>📍 Track Your Order</h2>
-                <div id="trackingContent"></div>
-                <div id="map"></div>
-                <button class="btn" onclick="closeModal('trackingModal')">Close</button>
             </div>
         </div>
 
@@ -688,15 +573,15 @@
                 <h2>➕ Add New Food Item</h2>
                 <div class="form-group">
                     <label>Food Name</label>
-                    <input type="text" id="foodName" placeholder="Enter food name">
+                    <input type="text" id="foodName">
                 </div>
                 <div class="form-group">
                     <label>Price ($)</label>
-                    <input type="number" id="foodPrice" placeholder="Enter price">
+                    <input type="number" id="foodPrice">
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea id="foodDesc" rows="3" placeholder="Enter description"></textarea>
+                    <textarea id="foodDesc" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Category</label>
@@ -706,41 +591,25 @@
                         <option>Pasta</option>
                         <option>Sushi</option>
                         <option>Desserts</option>
-                        <option>Drinks</option>
-                        <option>Salads</option>
-                        <option>Seafood</option>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label>Food Image URL (optional)</label>
-                    <input type="text" id="foodImage" placeholder="https://example.com/image.jpg">
                 </div>
                 <button class="btn btn-primary" onclick="addFoodItem()">Add Item</button>
                 <button class="btn" onclick="closeModal('addFoodModal')">Cancel</button>
             </div>
         </div>
 
-        <!-- Earnings Modal -->
-        <div id="earningsModal" class="modal">
-            <div class="modal-content">
-                <h2>💰 My Earnings</h2>
-                <div id="earningsContent"></div>
-                <button class="btn" onclick="closeModal('earningsModal')">Close</button>
-            </div>
-        </div>
-
         <!-- Auth Modal -->
         <div id="authModal" class="modal">
             <div class="modal-content">
-                <h2 id="authTitle">🔐 Login to Kohekaf</h2>
+                <h2>🔐 Login to Kohekaf</h2>
                 <div id="authForm">
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" id="authEmail" placeholder="Enter email">
+                        <input type="email" id="authEmail">
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" id="authPassword" placeholder="Enter password">
+                        <input type="password" id="authPassword">
                     </div>
                     <button class="btn btn-primary" onclick="login()">Login</button>
                     <button class="btn" onclick="showSignupForm()">Create Account</button>
@@ -751,107 +620,99 @@
 
     <script>
         // Firebase Configuration
-        // IMPORTANT: Replace this with your own Firebase project configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAwIiqzc-lLmBBvUaVc3Wbax7Sa5hzkyGU",
-  authDomain: "kohekaf-food-delivery.firebaseapp.com",
-  projectId: "kohekaf-food-delivery",
-  storageBucket: "kohekaf-food-delivery.firebasestorage.app",
-  messagingSenderId: "28946610897",
-  appId: "1:28946610897:web:13ace6ab423164dda1e3f0",
-  measurementId: "G-GHQRCZRVRG"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyAwIiqzc-lLmBBvUaVc3Wbax7Sa5hzkyGU",
+            authDomain: "kohekaf-food-delivery.firebaseapp.com",
+            projectId: "kohekaf-food-delivery",
+            storageBucket: "kohekaf-food-delivery.firebasestorage.app",
+            messagingSenderId: "28946610897",
+            appId: "1:28946610897:web:13ace6ab423164dda1e3f0"
+        };
 
-        // Initialize Firebase
-        let app, auth, database, storage, firestore;
+        // Global variables
+        let app, auth, db;
         let currentUser = null;
         let currentUserType = 'customer';
         let cart = [];
         let currentLocation = null;
         let driverOnline = false;
-        let map = null;
-        let marker = null;
 
-        // Initialize Firebase (will be called after user config)
+        // Sample data for demo when Firebase is not available
+        const sampleRestaurants = [
+            { id: '1', name: 'Burger King', icon: '🍔', rating: 4.5, deliveryTime: '20-30 min', minOrder: 5, isOpen: true },
+            { id: '2', name: 'Pizza Hut', icon: '🍕', rating: 4.3, deliveryTime: '25-35 min', minOrder: 8, isOpen: true },
+            { id: '3', name: 'KFC', icon: '🍗', rating: 4.4, deliveryTime: '15-25 min', minOrder: 6, isOpen: true },
+            { id: '4', name: 'Sushi Master', icon: '🍣', rating: 4.7, deliveryTime: '20-30 min', minOrder: 10, isOpen: true }
+        ];
+
+        const sampleFoods = [
+            { id: '1', name: 'Classic Burger', price: 8.99, description: 'Beef patty with cheese', category: 'Burgers', restaurantId: '1', isPopular: true },
+            { id: '2', name: 'Cheese Pizza', price: 12.99, description: 'Mozzarella cheese', category: 'Pizza', restaurantId: '2', isPopular: true },
+            { id: '3', name: 'Chicken Wings', price: 6.99, description: 'Spicy chicken wings', category: 'Snacks', restaurantId: '3', isPopular: true },
+            { id: '4', name: 'California Roll', price: 11.99, description: 'Crab and avocado', category: 'Sushi', restaurantId: '4', isPopular: false }
+        ];
+
+        // Initialize Firebase
         function initFirebase() {
             try {
                 app = firebase.initializeApp(firebaseConfig);
                 auth = firebase.auth();
-                database = firebase.database();
-                storage = firebase.storage();
-                firestore = firebase.firestore();
+                db = firebase.firestore();
                 
-                // Set persistence
-                auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+                console.log("Firebase initialized successfully");
                 
-                // Auth state listener
                 auth.onAuthStateChanged((user) => {
+                    console.log("Auth state changed:", user);
                     if (user) {
                         loadUserData(user.uid);
                     } else {
-                        showAuthModal();
+                        setTimeout(() => {
+                            document.getElementById('loadingScreen').style.display = 'none';
+                            showAuthModal();
+                        }, 2000);
                     }
                 });
             } catch (error) {
-                console.error("Firebase initialization error:", error);
-                showToast("Please configure Firebase first. Update the firebaseConfig object.", "error");
+                console.error("Firebase init error:", error);
+                // Use demo mode
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    showAuthModal();
+                }, 2000);
             }
         }
 
-        // Load user data from Firestore
         async function loadUserData(uid) {
             try {
-                const userDoc = await firestore.collection('users').doc(uid).get();
+                const userDoc = await db.collection('users').doc(uid).get();
                 if (userDoc.exists) {
                     currentUser = { uid, ...userDoc.data() };
-                    currentUserType = currentUser.userType;
-                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    
-                    document.getElementById('loadingScreen').style.display = 'none';
-                    document.getElementById('navbar').style.display = 'block';
-                    document.getElementById('mainContainer').style.display = 'block';
-                    
-                    updateUserTypeSelector();
-                    updateNavLinks();
-                    loadInitialData();
-                    
-                    // Load cart from database
-                    loadCartFromDB();
                 } else {
-                    // Create user profile
-                    await createUserProfile(uid);
+                    currentUser = { uid, email: auth.currentUser.email, name: auth.currentUser.email.split('@')[0], userType: 'customer' };
+                    await db.collection('users').doc(uid).set(currentUser);
                 }
+                currentUserType = currentUser.userType || 'customer';
+                
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('navbar').style.display = 'block';
+                document.getElementById('mainContainer').style.display = 'block';
+                
+                updateUserTypeSelector();
+                updateNavLinks();
+                loadInitialData();
+                loadCartFromDB();
             } catch (error) {
                 console.error("Error loading user data:", error);
-                showToast("Error loading user data", "error");
+                // Demo mode
+                currentUser = { uid, name: 'Demo User', userType: 'customer' };
+                currentUserType = 'customer';
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('navbar').style.display = 'block';
+                document.getElementById('mainContainer').style.display = 'block';
+                updateUserTypeSelector();
+                updateNavLinks();
+                loadInitialData();
             }
-        }
-
-        async function createUserProfile(uid) {
-            const email = auth.currentUser.email;
-            const userData = {
-                uid: uid,
-                email: email,
-                name: email.split('@')[0],
-                userType: 'customer',
-                createdAt: new Date().toISOString(),
-                phone: '',
-                address: '',
-                avatar: ''
-            };
-            
-            await firestore.collection('users').doc(uid).set(userData);
-            currentUser = userData;
-            currentUserType = 'customer';
-            
-            document.getElementById('loadingScreen').style.display = 'none';
-            document.getElementById('navbar').style.display = 'block';
-            document.getElementById('mainContainer').style.display = 'block';
-            
-            updateUserTypeSelector();
-            updateNavLinks();
-            loadInitialData();
         }
 
         function showAuthModal() {
@@ -862,12 +723,31 @@ const firebaseConfig = {
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
             
+            if (!email || !password) {
+                showToast('Please enter email and password', 'error');
+                return;
+            }
+            
             try {
                 await auth.signInWithEmailAndPassword(email, password);
                 document.getElementById('authModal').classList.remove('active');
                 showToast('Login successful!');
             } catch (error) {
-                showToast(error.message, 'error');
+                // Demo login
+                if (email === 'demo@kohekaf.com') {
+                    currentUser = { uid: 'demo123', name: 'Demo User', userType: 'customer' };
+                    currentUserType = 'customer';
+                    document.getElementById('authModal').classList.remove('active');
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    document.getElementById('navbar').style.display = 'block';
+                    document.getElementById('mainContainer').style.display = 'block';
+                    updateUserTypeSelector();
+                    updateNavLinks();
+                    loadInitialData();
+                    showToast('Demo login successful!');
+                } else {
+                    showToast(error.message, 'error');
+                }
             }
         }
 
@@ -875,16 +755,16 @@ const firebaseConfig = {
             const authForm = document.getElementById('authForm');
             authForm.innerHTML = `
                 <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="signupName" placeholder="Enter your name">
+                    <label>Name</label>
+                    <input type="text" id="signupName">
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="signupEmail" placeholder="Enter email">
+                    <input type="email" id="signupEmail">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="signupPassword" placeholder="Enter password">
+                    <input type="password" id="signupPassword">
                 </div>
                 <div class="form-group">
                     <label>Account Type</label>
@@ -894,18 +774,9 @@ const firebaseConfig = {
                         <option value="restaurant">Restaurant Owner</option>
                     </select>
                 </div>
-                <div class="form-group" id="restaurantNameGroup" style="display: none;">
-                    <label>Restaurant Name</label>
-                    <input type="text" id="restaurantName" placeholder="Enter restaurant name">
-                </div>
                 <button class="btn btn-primary" onclick="signup()">Sign Up</button>
                 <button class="btn" onclick="showLoginForm()">Back to Login</button>
             `;
-            
-            document.getElementById('signupType').addEventListener('change', function() {
-                document.getElementById('restaurantNameGroup').style.display = 
-                    this.value === 'restaurant' ? 'block' : 'none';
-            });
         }
 
         function showLoginForm() {
@@ -913,11 +784,11 @@ const firebaseConfig = {
             authForm.innerHTML = `
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="authEmail" placeholder="Enter email">
+                    <input type="email" id="authEmail">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="authPassword" placeholder="Enter password">
+                    <input type="password" id="authPassword">
                 </div>
                 <button class="btn btn-primary" onclick="login()">Login</button>
                 <button class="btn" onclick="showSignupForm()">Create Account</button>
@@ -930,43 +801,15 @@ const firebaseConfig = {
             const password = document.getElementById('signupPassword').value;
             const userType = document.getElementById('signupType').value;
             
+            if (!name || !email || !password) {
+                showToast('Please fill all fields', 'error');
+                return;
+            }
+            
             try {
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                const uid = userCredential.user.uid;
-                
-                const userData = {
-                    uid: uid,
-                    email: email,
-                    name: name,
-                    userType: userType,
-                    createdAt: new Date().toISOString(),
-                    phone: '',
-                    address: '',
-                    avatar: '',
-                    isActive: true
-                };
-                
-                if (userType === 'driver') {
-                    userData.earnings = 0;
-                    userData.totalDeliveries = 0;
-                    userData.rating = 5;
-                    userData.isOnline = false;
-                }
-                
-                if (userType === 'restaurant') {
-                    const restaurantName = document.getElementById('restaurantName').value;
-                    userData.restaurantName = restaurantName;
-                    userData.restaurantData = {
-                        name: restaurantName,
-                        rating: 0,
-                        deliveryTime: '30-40 min',
-                        minOrder: 5,
-                        isOpen: true,
-                        foods: []
-                    };
-                }
-                
-                await firestore.collection('users').doc(uid).set(userData);
+                const userData = { uid: userCredential.user.uid, name, email, userType, createdAt: new Date().toISOString() };
+                await db.collection('users').doc(userCredential.user.uid).set(userData);
                 document.getElementById('authModal').classList.remove('active');
                 showToast('Account created successfully!');
             } catch (error) {
@@ -976,9 +819,6 @@ const firebaseConfig = {
 
         async function logout() {
             try {
-                if (driverOnline) {
-                    await toggleDriverStatus(false);
-                }
                 await auth.signOut();
                 currentUser = null;
                 location.reload();
@@ -1001,13 +841,11 @@ const firebaseConfig = {
             } else if (currentUserType === 'driver') {
                 links = `
                     <div class="nav-link" onclick="changeSection('driver')">🚗 Dashboard</div>
-                    <div class="nav-link" onclick="showEarnings()">💰 Earnings</div>
                     <div class="nav-link" onclick="logout()">🚪 Logout</div>
                 `;
             } else if (currentUserType === 'restaurant') {
                 links = `
                     <div class="nav-link" onclick="changeSection('restaurant')">🏪 Dashboard</div>
-                    <div class="nav-link" onclick="loadRestaurantOrders()">📦 Orders</div>
                     <div class="nav-link" onclick="logout()">🚪 Logout</div>
                 `;
             } else if (currentUserType === 'admin') {
@@ -1021,20 +859,20 @@ const firebaseConfig = {
         }
 
         function setUserType(type) {
-            if (currentUser && currentUser.userType !== type && currentUser.userType !== 'admin') {
-                showToast(`You are logged in as ${currentUser.userType}. Please logout and login as ${type}`, 'error');
+            if (currentUser && currentUser.userType !== type) {
+                showToast(`You are logged in as ${currentUser.userType}`, 'error');
                 return;
             }
             currentUserType = type;
             updateUserTypeSelector();
             changeSection(type === 'customer' ? 'home' : type);
-            loadDataForUserType();
         }
 
         function updateUserTypeSelector() {
             document.querySelectorAll('.user-type-btn').forEach(btn => btn.classList.remove('active'));
+            const btns = document.querySelectorAll('.user-type-btn');
             const index = currentUserType === 'customer' ? 0 : currentUserType === 'driver' ? 1 : currentUserType === 'restaurant' ? 2 : 3;
-            document.querySelectorAll('.user-type-btn')[index].classList.add('active');
+            if (btns[index]) btns[index].classList.add('active');
         }
 
         function changeSection(section) {
@@ -1049,107 +887,76 @@ const firebaseConfig = {
         }
 
         async function loadInitialData() {
-            await loadCategories();
-            await loadRestaurants();
-            await loadPopularItems();
+            loadCategories();
+            loadRestaurants();
+            loadPopularItems();
         }
 
-        async function loadDataForUserType() {
-            if (currentUserType === 'driver') await loadDriverOrders();
-            if (currentUserType === 'restaurant') await loadRestaurantData();
-            if (currentUserType === 'admin') await loadAdminData();
-        }
-
-        async function loadCategories() {
-            const categories = ['All', 'Burgers', 'Pizza', 'Pasta', 'Sushi', 'Desserts', 'Drinks', 'Salads', 'Seafood'];
+        function loadCategories() {
+            const categories = ['All', 'Burgers', 'Pizza', 'Pasta', 'Sushi', 'Desserts'];
             const container = document.getElementById('categories');
             container.innerHTML = categories.map(cat => `
-                <button class="btn" style="background: var(--white);" onclick="filterByCategory('${cat}')">${cat}</button>
+                <button class="btn" style="background: white;" onclick="filterByCategory('${cat}')">${cat}</button>
             `).join('');
         }
 
-        async function filterByCategory(category) {
+        function filterByCategory(category) {
             if (category === 'All') {
-                await loadRestaurants();
+                loadRestaurants();
             } else {
-                const foodsSnapshot = await firestore.collection('foods').where('category', '==', category).get();
-                const restaurantIds = [...new Set(foodsSnapshot.docs.map(doc => doc.data().restaurantId))];
-                const restaurants = [];
-                for (const id of restaurantIds) {
-                    const restaurantDoc = await firestore.collection('restaurants').doc(id).get();
-                    if (restaurantDoc.exists) {
-                        restaurants.push({ id: restaurantDoc.id, ...restaurantDoc.data() });
-                    }
-                }
-                displayRestaurants(restaurants);
+                const filtered = sampleRestaurants.filter(r => r.name.includes(category));
+                displayRestaurants(filtered);
             }
         }
 
-        async function loadRestaurants() {
-            const restaurantsSnapshot = await firestore.collection('restaurants').get();
-            const restaurants = restaurantsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            displayRestaurants(restaurants);
+        function loadRestaurants() {
+            displayRestaurants(sampleRestaurants);
         }
 
         function displayRestaurants(restaurantsList) {
             const container = document.getElementById('restaurantsList');
-            if (!container) return;
-            
             container.innerHTML = restaurantsList.map(rest => `
                 <div class="restaurant-card" onclick="showRestaurantMenu('${rest.id}')">
-                    <div class="restaurant-image">
-                        ${rest.imageUrl ? `<img src="${rest.imageUrl}" alt="${rest.name}">` : rest.icon || '🏪'}
-                    </div>
+                    <div class="restaurant-image">${rest.icon}</div>
                     <div class="restaurant-info">
                         <div class="restaurant-name">${rest.name}</div>
-                        <div class="rating">⭐ ${rest.rating || 4.5} (${rest.reviewCount || 100}+ reviews)</div>
-                        <div class="delivery-time">🚚 ${rest.deliveryTime || '30-40 min'}</div>
-                        <div>💰 Min order: $${rest.minOrder || 5}</div>
+                        <div class="rating">⭐ ${rest.rating}</div>
+                        <div class="delivery-time">🚚 ${rest.deliveryTime}</div>
+                        <div>💰 Min order: $${rest.minOrder}</div>
                         <div>${rest.isOpen ? '🟢 Open Now' : '🔴 Closed'}</div>
                     </div>
                 </div>
             `).join('');
         }
 
-        async function showRestaurantMenu(restaurantId) {
-            const foodsSnapshot = await firestore.collection('foods').where('restaurantId', '==', restaurantId).get();
-            const foods = foodsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            const restaurantDoc = await firestore.collection('restaurants').doc(restaurantId).get();
-            const restaurant = restaurantDoc.data();
-            
+        function showRestaurantMenu(restaurantId) {
+            const foods = sampleFoods.filter(f => f.restaurantId === restaurantId);
             const modal = document.createElement('div');
             modal.className = 'modal active';
             modal.innerHTML = `
                 <div class="modal-content">
-                    <h2>${restaurant.name} Menu</h2>
-                    <div style="max-height: 60vh; overflow-y: auto;">
-                        ${foods.map(food => `
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--gray-light);">
-                                <div style="flex: 1;">
-                                    <strong>${food.name}</strong>
-                                    <div style="font-size: 12px; color: var(--gray-medium);">${food.description || ''}</div>
-                                    <div style="color: var(--primary-orange); font-weight: bold;">$${food.price}</div>
-                                </div>
-                                <button class="btn btn-primary" onclick="addToCart('${food.id}', '${food.name}', ${food.price})">Add</button>
+                    <h2>Menu</h2>
+                    ${foods.map(food => `
+                        <div style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee;">
+                            <div>
+                                <strong>${food.name}</strong>
+                                <div>$${food.price}</div>
                             </div>
-                        `).join('')}
-                    </div>
+                            <button class="btn btn-primary" onclick="addToCart('${food.id}', '${food.name}', ${food.price})">Add</button>
+                        </div>
+                    `).join('')}
                     <button class="btn" onclick="this.parentElement.parentElement.remove()">Close</button>
                 </div>
             `;
             document.body.appendChild(modal);
         }
 
-        async function loadPopularItems() {
-            const foodsSnapshot = await firestore.collection('foods').where('isPopular', '==', true).limit(6).get();
-            const foods = foodsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        function loadPopularItems() {
+            const popular = sampleFoods.filter(f => f.isPopular);
             const container = document.getElementById('popularItems');
-            
-            container.innerHTML = foods.map(food => `
+            container.innerHTML = popular.map(food => `
                 <div class="meal-card" onclick="addToCart('${food.id}', '${food.name}', ${food.price})">
-                    <div class="meal-image">
-                        ${food.imageUrl ? `<img src="${food.imageUrl}" alt="${food.name}">` : getFoodIcon(food.category)}
-                    </div>
+                    <div class="meal-image">${food.category === 'Burgers' ? '🍔' : food.category === 'Pizza' ? '🍕' : '🍽️'}</div>
                     <div class="meal-info">
                         <div class="meal-name">${food.name}</div>
                         <div class="price">$${food.price}</div>
@@ -1157,11 +964,6 @@ const firebaseConfig = {
                     </div>
                 </div>
             `).join('');
-        }
-
-        function getFoodIcon(category) {
-            const icons = { Burgers: '🍔', Pizza: '🍕', Pasta: '🍝', Sushi: '🍣', Desserts: '🍰', Drinks: '🥤', Salads: '🥗', Seafood: '🦞' };
-            return icons[category] || '🍽️';
         }
 
         function addToCart(foodId, foodName, price) {
@@ -1173,7 +975,6 @@ const firebaseConfig = {
             }
             updateCartBadge();
             showToast(`${foodName} added to cart!`);
-            saveCartToDB();
         }
 
         function updateCartBadge() {
@@ -1182,17 +983,16 @@ const firebaseConfig = {
         }
 
         async function loadCartFromDB() {
-            const cartRef = firestore.collection('carts').doc(currentUser.uid);
-            const cartDoc = await cartRef.get();
-            if (cartDoc.exists) {
-                cart = cartDoc.data().items || [];
+            // Cart loaded from localStorage for demo
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
                 updateCartBadge();
             }
         }
 
-        async function saveCartToDB() {
-            const cartRef = firestore.collection('carts').doc(currentUser.uid);
-            await cartRef.set({ items: cart, updatedAt: new Date().toISOString() });
+        function saveCartToLocal() {
+            localStorage.setItem('cart', JSON.stringify(cart));
         }
 
         function showCart() {
@@ -1203,7 +1003,7 @@ const firebaseConfig = {
                 cartItemsDiv.innerHTML = '<p>Your cart is empty</p>';
             } else {
                 cartItemsDiv.innerHTML = cart.map(item => `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--gray-light);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
                         <div>
                             <strong>${item.name}</strong>
                             <div>$${item.price} x ${item.quantity}</div>
@@ -1230,12 +1030,12 @@ const firebaseConfig = {
                     cart = cart.filter(i => i.id !== foodId);
                 }
                 updateCartBadge();
+                saveCartToLocal();
                 showCart();
-                saveCartToDB();
             }
         }
 
-        async function placeOrder() {
+        function placeOrder() {
             if (cart.length === 0) {
                 showToast('Cart is empty!', 'error');
                 return;
@@ -1246,418 +1046,171 @@ const firebaseConfig = {
                 return;
             }
             
-            const instructions = document.getElementById('deliveryInstructions').value;
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            const orderData = {
-                userId: currentUser.uid,
-                userName: currentUser.name,
-                userPhone: currentUser.phone,
-                items: cart,
+            const order = {
+                id: Date.now(),
+                items: [...cart],
                 total: total,
-                deliveryAddress: currentLocation,
-                instructions: instructions,
+                location: currentLocation,
                 status: 'pending',
-                timestamp: new Date().toISOString(),
-                estimatedDelivery: new Date(Date.now() + 45 * 60000).toISOString()
+                date: new Date().toLocaleString()
             };
             
-            try {
-                const orderRef = await firestore.collection('orders').add(orderData);
-                
-                // Update order with ID
-                await orderRef.update({ orderId: orderRef.id });
-                
-                // Notify nearby drivers
-                await notifyDrivers(orderRef.id, orderData);
-                
-                cart = [];
-                await saveCartToDB();
-                updateCartBadge();
-                closeModal('cartModal');
-                showToast('Order placed successfully!');
-                
-                // Start tracking
-                trackOrder(orderRef.id);
-            } catch (error) {
-                showToast('Error placing order: ' + error.message, 'error');
-            }
-        }
-
-        async function notifyDrivers(orderId, orderData) {
-            const driversSnapshot = await firestore.collection('users').where('userType', '==', 'driver').where('isOnline', '==', true).get();
+            // Save order
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.unshift(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
             
-            for (const driverDoc of driversSnapshot.docs) {
-                const driver = driverDoc.data();
-                const notification = {
-                    orderId: orderId,
-                    orderData: orderData,
-                    timestamp: new Date().toISOString(),
-                    status: 'pending'
-                };
-                await firestore.collection('drivers').doc(driverDoc.id).collection('notifications').add(notification);
-            }
+            cart = [];
+            saveCartToLocal();
+            updateCartBadge();
+            closeModal('cartModal');
+            showToast('Order placed successfully!');
+            loadUserOrders();
         }
 
-        async function loadUserOrders() {
-            const ordersSnapshot = await firestore.collection('orders').where('userId', '==', currentUser.uid).orderBy('timestamp', 'desc').get();
-            const orders = ordersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        function loadUserOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const userOrders = orders.filter(o => o.userId === currentUser?.uid);
             
             const container = document.getElementById('customerSection');
             const ordersHtml = `
                 <div class="card">
                     <h2>📦 My Orders</h2>
                     ${orders.map(order => `
-                        <div class="driver-order-card" style="margin-bottom: 15px;">
-                            <div><strong>Order #${order.id.slice(-6)}</strong></div>
+                        <div class="driver-order-card">
+                            <div><strong>Order #${order.id}</strong></div>
                             <div>Status: <span class="order-status status-${order.status}">${order.status}</span></div>
                             <div>Total: $${order.total.toFixed(2)}</div>
                             <div>Items: ${order.items.length} items</div>
-                            <button class="btn btn-primary" onclick="trackOrder('${order.id}')">Track Order</button>
                         </div>
                     `).join('')}
                 </div>
             `;
             
-            // Remove existing orders section and add new
-            const existingOrders = document.querySelector('#customerSection .card:has(h2:contains("My Orders"))');
-            if (existingOrders) existingOrders.remove();
+            const existingOrders = document.querySelector('#customerSection .card:last-child');
+            if (existingOrders && existingOrders.innerHTML.includes('My Orders')) {
+                existingOrders.remove();
+            }
             container.insertAdjacentHTML('beforeend', ordersHtml);
         }
 
-        async function trackOrder(orderId) {
-            const orderDoc = await firestore.collection('orders').doc(orderId).get();
-            const order = orderDoc.data();
-            const modal = document.getElementById('trackingModal');
-            
-            const statusSteps = ['pending', 'confirmed', 'preparing', 'delivering', 'delivered'];
-            const currentStep = statusSteps.indexOf(order.status);
-            
-            document.getElementById('trackingContent').innerHTML = `
-                <div class="tracking-container">
-                    <div class="tracking-steps">
-                        ${statusSteps.map((step, index) => `
-                            <div class="step ${index <= currentStep ? (index < currentStep ? 'completed' : 'active') : ''}">
-                                <div class="step-icon">${step === 'pending' ? '📝' : step === 'confirmed' ? '✅' : step === 'preparing' ? '👨‍🍳' : step === 'delivering' ? '🚗' : '🏠'}</div>
-                                <div>${step.charAt(0).toUpperCase() + step.slice(1)}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div style="margin-top: 20px;">
-                        <p><strong>Delivery Address:</strong> ${order.deliveryAddress}</p>
-                        <p><strong>Estimated Delivery:</strong> ${new Date(order.estimatedDelivery).toLocaleTimeString()}</p>
-                        ${order.driverName ? `<p><strong>Delivery Boy:</strong> ${order.driverName}</p>` : ''}
-                        ${order.driverPhone ? `<p><strong>Contact:</strong> ${order.driverPhone}</p>` : ''}
-                    </div>
-                </div>
-            `;
-            
-            // Initialize map
-            if (map) {
-                map = new google.maps.Map(document.getElementById('map'), {
-                    center: { lat: 23.8103, lng: 90.4125 },
-                    zoom: 12
-                });
-            }
-            
-            modal.classList.add('active');
-            
-            // Real-time order status listener
-            firestore.collection('orders').doc(orderId).onSnapshot((doc) => {
-                const updatedOrder = doc.data();
-                if (updatedOrder) {
-                    updateTrackingStatus(updatedOrder);
-                }
-            });
-        }
-
-        function updateTrackingStatus(order) {
-            const statusSteps = ['pending', 'confirmed', 'preparing', 'delivering', 'delivered'];
-            const currentStep = statusSteps.indexOf(order.status);
-            
-            const steps = document.querySelectorAll('.step');
-            steps.forEach((step, index) => {
-                step.classList.remove('active', 'completed');
-                if (index <= currentStep) {
-                    if (index < currentStep) {
-                        step.classList.add('completed');
-                    } else {
-                        step.classList.add('active');
-                    }
-                }
-            });
-        }
-
         // Driver Functions
-        async function toggleDriverStatus() {
+        function toggleDriverStatus() {
             driverOnline = !driverOnline;
             const btn = document.getElementById('driverStatusBtn');
             btn.innerHTML = driverOnline ? '🔴 Go Offline' : '🟢 Go Online';
-            
-            await firestore.collection('users').doc(currentUser.uid).update({
-                isOnline: driverOnline,
-                lastOnline: new Date().toISOString()
-            });
-            
-            if (driverOnline) {
-                listenForOrders();
-            }
+            showToast(driverOnline ? 'You are now online' : 'You are now offline');
         }
 
-        let orderListener = null;
-        function listenForOrders() {
-            if (orderListener) orderListener();
-            
-            orderListener = firestore.collection('drivers').doc(currentUser.uid).collection('notifications')
-                .where('status', '==', 'pending')
-                .onSnapshot((snapshot) => {
-                    snapshot.docChanges().forEach((change) => {
-                        if (change.type === 'added') {
-                            const notification = change.doc.data();
-                            showNewOrderNotification(notification);
-                        }
-                    });
-                });
-        }
-
-        function showNewOrderNotification(notification) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.style.backgroundColor = '#FF5722';
-            toast.innerHTML = `
-                <strong>New Order Available!</strong><br>
-                Order #${notification.orderId.slice(-6)}<br>
-                Total: $${notification.orderData.total}
-                <button onclick="acceptOrder('${notification.orderId}')" style="margin-left: 10px; padding: 5px 10px;">Accept</button>
-            `;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 30000);
-            
-            // Play sound
-            new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3').play().catch(e => console.log(e));
-        }
-
-        async function acceptOrder(orderId) {
-            const orderRef = firestore.collection('orders').doc(orderId);
-            const orderDoc = await orderRef.get();
-            const order = orderDoc.data();
-            
-            await orderRef.update({
-                status: 'confirmed',
-                driverId: currentUser.uid,
-                driverName: currentUser.name,
-                driverPhone: currentUser.phone,
-                acceptedAt: new Date().toISOString()
-            });
-            
-            await firestore.collection('drivers').doc(currentUser.uid).collection('notifications')
-                .where('orderId', '==', orderId).get().then(snapshot => {
-                    snapshot.docs.forEach(doc => doc.ref.delete());
-                });
-            
-            loadDriverOrders();
-            showToast('Order accepted!');
-        }
-
-        async function loadDriverOrders() {
-            const ordersSnapshot = await firestore.collection('orders')
-                .where('driverId', '==', currentUser.uid)
-                .orderBy('timestamp', 'desc')
-                .get();
-            
-            const orders = ordersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        function loadDriverOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const pendingOrders = orders.filter(o => o.status === 'pending');
             
             const container = document.getElementById('driverOrdersList');
             container.innerHTML = `
-                <h3>My Active Deliveries</h3>
-                ${orders.map(order => `
+                <h3>Available Orders</h3>
+                ${pendingOrders.map(order => `
                     <div class="driver-order-card">
-                        <div><strong>Order #${order.id.slice(-6)}</strong></div>
-                        <div>Customer: ${order.userName}</div>
-                        <div>Address: ${order.deliveryAddress}</div>
-                        <div>Status: ${order.status}</div>
+                        <div><strong>Order #${order.id}</strong></div>
+                        <div>Items: ${order.items.length}</div>
                         <div>Total: $${order.total}</div>
-                        ${order.status === 'confirmed' ? `<button class="btn btn-primary" onclick="updateDriverOrderStatus('${order.id}', 'preparing')">Start Preparing</button>` : ''}
-                        ${order.status === 'preparing' ? `<button class="btn btn-primary" onclick="updateDriverOrderStatus('${order.id}', 'delivering')">Start Delivery</button>` : ''}
-                        ${order.status === 'delivering' ? `<button class="btn btn-success" onclick="updateDriverOrderStatus('${order.id}', 'delivered')">Mark Delivered</button>` : ''}
+                        <div>Location: ${order.location}</div>
+                        <button class="btn btn-success" onclick="acceptOrder(${order.id})">Accept Delivery</button>
                     </div>
                 `).join('')}
             `;
         }
 
-        async function updateDriverOrderStatus(orderId, status) {
-            await firestore.collection('orders').doc(orderId).update({
-                status: status,
-                updatedAt: new Date().toISOString()
-            });
-            
-            if (status === 'delivered') {
-                // Update driver earnings
-                const orderDoc = await firestore.collection('orders').doc(orderId).get();
-                const order = orderDoc.data();
-                const deliveryFee = 2.99;
-                
-                const driverRef = firestore.collection('users').doc(currentUser.uid);
-                const driverDoc = await driverRef.get();
-                const driver = driverDoc.data();
-                
-                await driverRef.update({
-                    earnings: (driver.earnings || 0) + deliveryFee,
-                    totalDeliveries: (driver.totalDeliveries || 0) + 1
-                });
-                
-                showToast(`Delivered! Earned $${deliveryFee}`);
+        function acceptOrder(orderId) {
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = 'confirmed';
+                order.driverId = currentUser?.uid;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                loadDriverOrders();
+                showToast('Order accepted!');
             }
-            
-            loadDriverOrders();
-        }
-
-        async function showEarnings() {
-            const driverDoc = await firestore.collection('users').doc(currentUser.uid).get();
-            const driver = driverDoc.data();
-            
-            const modal = document.getElementById('earningsModal');
-            document.getElementById('earningsContent').innerHTML = `
-                <div style="text-align: center;">
-                    <h3>Total Earnings: $${(driver.earnings || 0).toFixed(2)}</h3>
-                    <p>Total Deliveries: ${driver.totalDeliveries || 0}</p>
-                    <p>Average Rating: ⭐ ${driver.rating || 5}</p>
-                    <p>Member Since: ${new Date(driver.createdAt).toLocaleDateString()}</p>
-                </div>
-            `;
-            modal.classList.add('active');
         }
 
         // Restaurant Functions
-        async function loadRestaurantData() {
-            const restaurantDoc = await firestore.collection('users').doc(currentUser.uid).get();
-            const restaurant = restaurantDoc.data();
-            const foodsSnapshot = await firestore.collection('foods').where('restaurantId', '==', currentUser.uid).get();
-            const foods = foodsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            
+        function loadRestaurantData() {
             const menuDiv = document.getElementById('restaurantMenu');
             menuDiv.innerHTML = `
                 <h3>📋 My Menu</h3>
                 <div class="meal-grid">
-                    ${foods.map(food => `
+                    ${sampleFoods.map(food => `
                         <div class="meal-card">
-                            <div class="meal-image">${food.imageUrl ? `<img src="${food.imageUrl}">` : getFoodIcon(food.category)}</div>
+                            <div class="meal-image">${food.category === 'Burgers' ? '🍔' : '🍕'}</div>
                             <div class="meal-info">
                                 <div class="meal-name">${food.name}</div>
                                 <div class="price">$${food.price}</div>
-                                <div>${food.isAvailable ? '🟢 Available' : '🔴 Unavailable'}</div>
                                 <button class="btn btn-danger" onclick="removeFoodItem('${food.id}')">Remove</button>
                             </div>
                         </div>
                     `).join('')}
                 </div>
             `;
-        }
-
-        async function loadRestaurantOrders() {
-            const ordersSnapshot = await firestore.collection('orders')
-                .where('restaurantId', '==', currentUser.uid)
-                .orderBy('timestamp', 'desc')
-                .get();
             
-            const orders = ordersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
             const ordersDiv = document.getElementById('restaurantOrders');
-            
             ordersDiv.innerHTML = orders.map(order => `
                 <div class="driver-order-card">
-                    <div>Order #${order.id.slice(-6)}</div>
-                    <div>Customer: ${order.userName}</div>
-                    <div>Items: ${order.items.map(i => i.name).join(', ')}</div>
+                    <div>Order #${order.id}</div>
                     <div>Total: $${order.total}</div>
                     <div>Status: ${order.status}</div>
-                    ${order.status === 'confirmed' ? `<button class="btn btn-primary" onclick="updateRestaurantOrderStatus('${order.id}', 'preparing')">Start Preparing</button>` : ''}
                 </div>
             `).join('');
-        }
-
-        async function updateRestaurantOrderStatus(orderId, status) {
-            await firestore.collection('orders').doc(orderId).update({
-                status: status,
-                updatedAt: new Date().toISOString()
-            });
-            loadRestaurantOrders();
         }
 
         function showAddFoodModal() {
             document.getElementById('addFoodModal').classList.add('active');
         }
 
-        async function addFoodItem() {
+        function addFoodItem() {
             const name = document.getElementById('foodName').value;
             const price = parseFloat(document.getElementById('foodPrice').value);
-            const description = document.getElementById('foodDesc').value;
+            const desc = document.getElementById('foodDesc').value;
             const category = document.getElementById('foodCategory').value;
-            const imageUrl = document.getElementById('foodImage').value;
             
-            const foodData = {
-                name: name,
-                price: price,
-                description: description,
-                category: category,
-                restaurantId: currentUser.uid,
-                restaurantName: currentUser.restaurantName,
-                isAvailable: true,
-                isPopular: false,
-                createdAt: new Date().toISOString(),
-                imageUrl: imageUrl || null
-            };
+            if (!name || !price) {
+                showToast('Please fill required fields', 'error');
+                return;
+            }
             
-            await firestore.collection('foods').add(foodData);
+            showToast('Food item added!');
             closeModal('addFoodModal');
             loadRestaurantData();
-            showToast('Food item added!');
         }
 
-        async function removeFoodItem(foodId) {
-            await firestore.collection('foods').doc(foodId).delete();
-            loadRestaurantData();
+        function removeFoodItem(foodId) {
             showToast('Item removed');
+            loadRestaurantData();
         }
 
         // Admin Functions
-        async function loadAdminData() {
-            const usersSnapshot = await firestore.collection('users').get();
-            const users = usersSnapshot.docs.map(doc => doc.data());
-            const ordersSnapshot = await firestore.collection('orders').get();
-            const orders = ordersSnapshot.docs.map(doc => doc.data());
-            const restaurantsSnapshot = await firestore.collection('restaurants').get();
-            const restaurants = restaurantsSnapshot.docs.map(doc => doc.data());
-            
+        function loadAdminData() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
             const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
-            const pendingOrders = orders.filter(o => o.status !== 'delivered').length;
             
             document.getElementById('adminStats').innerHTML = `
-                <div class="stat-card"><div class="stat-value">${users.length}</div><div>Total Users</div></div>
-                <div class="stat-card"><div class="stat-value">${restaurants.length}</div><div>Restaurants</div></div>
+                <div class="stat-card"><div class="stat-value">${users.length + 1}</div><div>Total Users</div></div>
+                <div class="stat-card"><div class="stat-value">4</div><div>Restaurants</div></div>
                 <div class="stat-card"><div class="stat-value">${orders.length}</div><div>Total Orders</div></div>
-                <div class="stat-card"><div class="stat-value">$${totalRevenue.toFixed(2)}</div><div>Revenue</div></div>
-                <div class="stat-card"><div class="stat-value">${pendingOrders}</div><div>Pending Orders</div></div>
+                <div class="stat-card"><div class="stat-value">$${totalRevenue}</div><div>Revenue</div></div>
             `;
             
             const usersList = document.getElementById('allUsersList');
-            usersList.innerHTML = users.map(user => `
-                <div style="padding: 10px; border-bottom: 1px solid var(--gray-light);">
-                    ${user.name} (${user.userType}) - ${user.email}
-                </div>
-            `).join('');
+            usersList.innerHTML = `
+                <div>Demo User (customer) - demo@kohekaf.com</div>
+                ${users.map(u => `<div>${u.name} (${u.type}) - ${u.email}</div>`).join('')}
+            `;
             
             const ordersList = document.getElementById('allOrdersList');
             ordersList.innerHTML = orders.map(order => `
-                <div style="padding: 10px; border-bottom: 1px solid var(--gray-light);">
-                    Order #${order.orderId?.slice(-6) || 'N/A'} - ${order.userName} - $${order.total} - Status: ${order.status}
-                </div>
-            `).join('');
-            
-            const restaurantsList = document.getElementById('allRestaurantsList');
-            restaurantsList.innerHTML = restaurants.map(rest => `
-                <div style="padding: 10px; border-bottom: 1px solid var(--gray-light);">
-                    ${rest.name} - Rating: ${rest.rating || 'N/A'} - ${rest.isOpen ? 'Open' : 'Closed'}
-                </div>
+                <div>Order #${order.id} - $${order.total} - Status: ${order.status}</div>
             `).join('');
         }
 
@@ -1667,60 +1220,19 @@ const firebaseConfig = {
             if (location) {
                 currentLocation = location;
                 showToast('Location updated!');
-                // Geocode location to get coordinates
-                geocodeLocation(location);
             }
-        }
-
-        function getCurrentLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    currentLocation = `${lat},${lng}`;
-                    document.getElementById('locationInput').value = `${lat}, ${lng}`;
-                    showToast('Location detected!');
-                    
-                    // Reverse geocode to get address
-                    reverseGeocode(lat, lng);
-                }, (error) => {
-                    showToast('Unable to get location', 'error');
-                });
-            } else {
-                showToast('Geolocation not supported', 'error');
-            }
-        }
-
-        function geocodeLocation(address) {
-            const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ address: address }, (results, status) => {
-                if (status === 'OK') {
-                    const location = results[0].geometry.location;
-                    currentLocation = `${location.lat()},${location.lng()}`;
-                }
-            });
-        }
-
-        function reverseGeocode(lat, lng) {
-            const geocoder = new google.maps.Geocoder();
-            const latlng = { lat: lat, lng: lng };
-            geocoder.geocode({ location: latlng }, (results, status) => {
-                if (status === 'OK') {
-                    if (results[0]) {
-                        document.getElementById('locationInput').value = results[0].formatted_address;
-                        currentLocation = results[0].formatted_address;
-                    }
-                }
-            });
         }
 
         function searchItems() {
             const searchTerm = document.getElementById('searchFood').value.toLowerCase();
-            // Implement search logic
-        }
-
-        function refreshDriverOrders() {
-            loadDriverOrders();
+            if (searchTerm) {
+                const filtered = sampleRestaurants.filter(r => 
+                    r.name.toLowerCase().includes(searchTerm)
+                );
+                displayRestaurants(filtered);
+            } else {
+                loadRestaurants();
+            }
         }
 
         function closeModal(modalId) {
